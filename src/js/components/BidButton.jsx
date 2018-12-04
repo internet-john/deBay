@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
+import Button from '@material-ui/core/Button';
 
 export default class BidButton extends Component {
   render() {
     return (
-      <div className="bid-button">
-        <button>Bid!</button>
-      </div>
+      <Button className="bid-button" variant="contained" color="primary" fullWidth>
+        Bid
+      </Button>
     );
   }
 };
