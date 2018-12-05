@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
+import GridListTile from '@material-ui/core/GridListTile';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 
@@ -63,7 +64,7 @@ function Listing(props) {
         </div>
       </div>
       <div className={classes.section3}>
-        <Button className="listing__bid-button" variant="contained" color="primary" text="Bid" />
+        <Button className="listing__bid-button" variant="contained" color="primary" text="Bid" style={{bottom: "0", position: "absolute"}}/>
       </div>
     </div>
   );
