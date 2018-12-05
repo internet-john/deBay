@@ -1,27 +1,72 @@
-import React, {Component} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import InfoIcon from '@material-ui/icons/Info';
+import Button from '@material-ui/core/Button';
 
-import Listing from './Listing.jsx';
-import FilterDrawer from './FilterDrawer.jsx';
+import tileData from '../tileData';
 
-export default class ListingPage extends Component {
-  render() {
-    return (
-      <div className="listing-page">
-          <div style={{float: "left", height: "100%", width: "10%"}}>
-              <FilterDrawer className="listing-page__filter-drawer" options={["ERC-721 Tokens", "Real Estate", "Financial Assets", "Consumables", "Misc", "Vehicles"]}/>
-          </div>
-          <div className="listing-page__grid" style={{margin: "5% 10%", display: "flex", flexWrap: "wrap", height: "100%", width: "80%"}}>
-            <Listing itemName={"CrytoKitty"} itemPrice={"32.81"}/>
-            <Listing itemName={"Boring Co Flamethrower"} itemPrice={"562.81"}/>
-            <Listing itemName={"Cheese pizza"} itemPrice={"1.77"}/>
-            <Listing itemName={"Taj Mahal"} itemPrice={"9999999999999.81"}/>
-            <Listing itemName={"CryptoZombie"} itemPrice={"562.81"}/>
-            <Listing itemName={"CryptoKitty"} itemPrice={"12.77"}/>
-            <Listing itemName={"Rocket Launcher"} itemPrice={"3432.81"}/>
-            <Listing itemName={"Home"} itemPrice={"563940332.81"}/>
-            <Listing itemName={"Submarine"} itemPrice={"7468336.32"}/>
-          </div>
-      </div>
-    );
-  }
+const styles = theme => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.background.paper,
+  },
+  gridList: {
+    width: '70%',
+    height: '100%'
+  },
+  button: {
+    right: "20%"
+  },
+});
+
+// Move GridListTile to Listing component
+const mapData = (tileData, classes) => {
+  return (
+    tileData.map((tile, i) => (
+      <GridListTile key={i}>
+        <img src={tile.img} alt={tile.title} />
+        <GridListTileBar
+          title={tile.title}
+          subtitle={<span>Cost: {tile.price}</span>}
+          actionIcon={
+            <Button variant="contained" color="primary" className={classes.button}>Bid</Button>
+          }
+        />
+      </GridListTile>
+    ))
+  );
 }
+
+// TODO: Decompose into individual components
+//       - container
+//       - listing
+//       - action bar
+//       etc
+function ListingPage(props) {
+  const { classes } = props;
+
+  return (
+    <div className={classes.root}>
+      <GridList cellHeight={320} className={classes.gridList}>
+        <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
+          <ListSubheader component="div"><h3>deBay - the decentralized auction house.</h3></ListSubheader>
+        </GridListTile>
+        {mapData(tileData, classes)}
+      </GridList>
+    </div>
+  );
+}
+
+ListingPage.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(ListingPage);
