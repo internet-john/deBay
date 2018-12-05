@@ -1,14 +1,17 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import InfoIcon from '@material-ui/icons/Info';
 import Button from '@material-ui/core/Button';
+import Web3 from 'web3';
 
-import tileData from '../tileData';
+const url = 'http://127.0.0.1:7545';
+const web3 = new Web3(url);
+
+import assetData from '../../db/assetData';
 
 const styles = theme => ({
   root: {
@@ -27,42 +30,76 @@ const styles = theme => ({
   },
 });
 
-// Move GridListTile to Listing component
-const mapData = (tileData, classes) => {
-  return (
-    tileData.map((tile, i) => (
-      <GridListTile key={i}>
-        <img src={tile.img} alt={tile.title} />
-        <GridListTileBar
-          title={tile.title}
-          subtitle={<span>Cost: {tile.price}</span>}
-          actionIcon={
-            <Button variant="contained" color="primary" className={classes.button}>Bid</Button>
-          }
-        />
-      </GridListTile>
-    ))
-  );
-}
-
 // TODO: Decompose into individual components
 //       - container
 //       - listing
 //       - action bar
 //       etc
-function ListingPage(props) {
-  const { classes } = props;
+class ListingPage extends Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <div className={classes.root}>
-      <GridList cellHeight={320} className={classes.gridList}>
-        <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-          <ListSubheader component="div"><h3>deBay - the decentralized auction house.</h3></ListSubheader>
+    this.classes = this.props.classes;
+    this.contract = this.props.contract;
+    this.account;
+
+    this.handleClick = this.handleClick.bind(this);
+    this.mapData = this.mapData.bind(this);
+    this.getAccount = this.getAccount.bind(this);
+  }
+
+  componentDidMount() {
+    this.getAccount();
+  }
+
+  getAccount() {
+    let account;
+    web3.eth.getAccounts((error, accounts) => {
+      if (error) {
+        console.log(error);
+      }
+
+      this.account = accounts[0];
+    });
+  }
+
+  handleClick(e) {
+    const price = e.currentTarget.dataset["price"];
+
+    // this.contract.methods.bid(web3.toWei(price), {from: this.account});
+    this.contract.methods.bid();
+  }
+
+  // Move GridListTile to Listing component
+  mapData(assetData) {
+    return (
+      assetData.map((asset, i) => (
+        <GridListTile key={i}>
+          <img src={asset.img} alt={asset.title} />
+          <GridListTileBar
+            title={asset.title}
+            subtitle={<span>{asset.price}</span>}
+            actionIcon={
+              <Button className={this.classes.button} variant="contained" color="primary" data-price={asset.price} onClick={this.handleClick}>Bid</Button>
+            }
+          />
         </GridListTile>
-        {mapData(tileData, classes)}
-      </GridList>
-    </div>
-  );
+      ))
+    );
+  }
+
+  render() {
+    return (
+      <div className={this.classes.root}>
+        <GridList cellHeight={320} className={this.classes.gridList}>
+          <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
+            <ListSubheader component="div"><h3>deBay - the decentralized auction house.</h3></ListSubheader>
+          </GridListTile>
+          {this.mapData(assetData, this.classes)}
+        </GridList>
+      </div>
+    );
+  }
 }
 
 ListingPage.propTypes = {

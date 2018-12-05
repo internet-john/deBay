@@ -2,7 +2,7 @@ import Web3 from 'web3';
 
 const web3 = new Web3(window.web3.currentProvider);
 
-const CONTRACT_ADDRESS = '0xE743fBF721C31F3B28A57238A7f2453aA9368913';
+const CONTRACT_ADDRESS = '0xaB5847B32178dF990A0efB439b95023275ADa12b';
 const ABI = [
 	{
 		"constant": false,

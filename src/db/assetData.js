@@ -1,4 +1,4 @@
-const tileData = [
+const assetData = [
   {
     img: '/static/images/erc721.jpg',
     title: 'CrytoKitty',
@@ -46,4 +46,4 @@ const tileData = [
   }
 ];
 
-export default tileData;
+export default assetData;

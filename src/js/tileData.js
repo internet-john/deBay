@@ -7,7 +7,7 @@
 //             <Listing itemName={"Ninja Sword"} itemPrice={"3432.81"}/>
 //             <Listing itemName={"Home"} itemPrice={"563940332.81"}/>
 //             <Listing itemName={"Submarine"} itemPrice={"7468336.32"}/>
-const tileData = [
+const assetData = [
   {
     img: '/static/images/erc721.jpg',
     title: 'CrytoKitty',
@@ -55,4 +55,4 @@ const tileData = [
   }
 ];
 
-export default tileData;
+export default assetData;
