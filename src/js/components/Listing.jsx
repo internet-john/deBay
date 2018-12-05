@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 
-import BidButton from './BidButton.jsx';
+import Button from './Button.jsx';
 
 const styles = theme => ({
   root: {
@@ -64,7 +63,7 @@ function Listing(props) {
         </div>
       </div>
       <div className={classes.section3}>
-        <BidButton />
+        <Button className="listing__bid-button" variant="contained" color="primary" text="Bid" />
       </div>
     </div>
   );
