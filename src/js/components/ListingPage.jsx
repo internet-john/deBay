@@ -6,11 +6,8 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Button from '@material-ui/core/Button';
-import Web3 from 'web3';
 
-const url = 'http://127.0.0.1:7545';
-const web3 = new Web3(url);
-
+import auction from '../auction';
 import assetData from '../../db/assetData';
 
 const styles = theme => ({
@@ -42,6 +39,7 @@ class ListingPage extends Component {
     this.classes = this.props.classes;
     this.contract = this.props.contract;
     this.account;
+    this.web3Provider;
 
     this.handleClick = this.handleClick.bind(this);
     this.mapData = this.mapData.bind(this);
@@ -49,7 +47,29 @@ class ListingPage extends Component {
   }
 
   componentDidMount() {
+    this.setProvider();
     this.getAccount();
+    // this.initContract();
+  }
+
+  setProvider() {
+    if (window.ethereum) {
+      this.web3Provider = window.ethereum;
+
+      try {
+        window.ethereum.enable();
+      } catch (error) {
+        console.error(`Something went wrong - ${error}`);
+      }
+    } else if (window.web3) {
+      this.web3Provider = window.web3.currentProvider;
+    } else {
+      this.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+    }
+
+    web3 = new Web3(this.web3Provider);
+
+    // return this.initContract();
   }
 
   getAccount() {
@@ -63,11 +83,16 @@ class ListingPage extends Component {
     });
   }
 
+  // initContract() {
+  //
+  // }
+
   handleClick(e) {
     const price = e.currentTarget.dataset["price"];
 
     // this.contract.methods.bid(web3.toWei(price), {from: this.account});
-    this.contract.methods.bid();
+    this.contract.send(price, {from: this.account});
+    // this.contract.methods.bid();
   }
 
   // Move GridListTile to Listing component
