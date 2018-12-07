@@ -1,8 +1,8 @@
-import Web3 from 'web3';
+import Web3 from "web3";
 
 const web3 = new Web3(window.web3.currentProvider);
 
-const CONTRACT_ADDRESS = '0xaB5847B32178dF990A0efB439b95023275ADa12b';
+const ADDRESS = '0xE50321f5a2d0487b12E2cE96Bab7D466e7b622Cf';
 const ABI = [
 	{
 		"constant": false,
@@ -143,4 +143,6 @@ const ABI = [
 	}
 ];
 
-export default new web3.eth.Contract(ABI, CONTRACT_ADDRESS);
+const auction = new web3.eth.Contract(ABI, ADDRESS);
+
+export default auction;
